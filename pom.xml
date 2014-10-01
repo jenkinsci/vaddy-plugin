@@ -5,7 +5,7 @@
     <artifactId>plugin</artifactId>
     <version>1.532.3</version><!-- which version of Jenkins is this plugin built against? Users must have at least this Jenkins version to use this plugin. -->
   </parent>
-  <version>1.1</version>
+  <version>1.2-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
   <licenses>
