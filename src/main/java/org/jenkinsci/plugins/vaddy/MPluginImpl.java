@@ -104,7 +104,7 @@ throws Exception
 log( "Sleeping 15 seconds ..." );
 Thread.sleep( 15 * 1000 ); //15秒スリープ
 
-final long timeout = System.currentTimeMillis() + ( 1000L * 60 * 60 ); // 1hour from now
+final long timeout = System.currentTimeMillis() + ( 1000L * 60 * 60 * 3); // 3hours from now
 
 	//結果取得
 while( System.currentTimeMillis() < timeout
