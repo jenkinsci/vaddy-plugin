@@ -21,6 +21,7 @@ public class MPluginImpl
 private final String host;
 private final String userId;
 private final String authKey;
+private final String crawlId;
 private final String apiServerUrl;
 private final String proxyHost;
 private final String proxyPort;
@@ -33,11 +34,12 @@ static
 MVaddyUtil.setConfig( new MConfig() );
 }
 //--------------------------------------------------------------------------------
-public MPluginImpl( String host, String userId, String authKey, String apiServerUrl, String proxyHost, String proxyPort )
+public MPluginImpl( String host, String userId, String authKey, String crawlId, String apiServerUrl, String proxyHost, String proxyPort )
 {
 this.host = host;
 this.userId = userId;
 this.authKey = authKey;
+this.crawlId = crawlId;
 this.apiServerUrl = apiServerUrl;
 this.proxyHost = proxyHost;
 this.proxyPort = proxyPort;
@@ -76,6 +78,7 @@ parameterMap.put( "action", "start" );
 parameterMap.put( "user", userId );
 parameterMap.put( "fqdn", host );
 parameterMap.put( "auth_key", authKey );
+parameterMap.put( "crawl_id", crawlId);
 
 final MHttpRequest apiRequest = MVaddyUtil.getAPIRequest( "/v1/scan", MConstants.HTTP_METHOD_POST, parameterMap );
 apiRequest.setHeaderValue( "Host", apiServerHost );

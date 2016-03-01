@@ -22,17 +22,19 @@ extends Builder
 private final String host;
 private final String userId;
 private final String authKey;
+private final String crawlId;
 private final String apiServerUrl;
 private final String proxyHost;
 private final String proxyPort;
 
 // Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
 @DataBoundConstructor
-public VaddyPlugin( String host, String userId, String authKey, String apiServerUrl, String proxyHost, String proxyPort )
+public VaddyPlugin( String host, String userId, String authKey, String crawlId, String apiServerUrl, String proxyHost, String proxyPort )
 {
 this.host = host;
 this.userId = userId;
 this.authKey = authKey;
+this.crawlId = crawlId;
 this.apiServerUrl = apiServerUrl;
 this.proxyHost = proxyHost;
 this.proxyPort = proxyPort;
@@ -41,7 +43,7 @@ this.proxyPort = proxyPort;
 @Override
 public boolean perform( AbstractBuild build, Launcher launcher, BuildListener listener )
 {
-MPluginImpl impl = new MPluginImpl( host, userId, authKey, apiServerUrl, proxyHost, proxyPort );
+MPluginImpl impl = new MPluginImpl( host, userId, authKey, crawlId, apiServerUrl, proxyHost, proxyPort );
 impl.setLogStream( listener.getLogger() );
 if( impl.execute() )
 	{
@@ -123,6 +125,13 @@ public String getUserId()
 
 return userId;
 }
+
+public String getCrawlId()
+{
+
+return crawlId;
+}
+
 }
 
 

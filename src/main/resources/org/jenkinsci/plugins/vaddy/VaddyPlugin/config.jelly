@@ -21,7 +21,13 @@
   <f:entry title="API Auth Key" field="authKey">
     <f:textbox />
   </f:entry>
-  
+
+  <f:entry title="Crawl ID(Optional)" field="crawlId">
+    <f:textbox />
+  </f:entry>
+
+
+
   <f:advanced>
   
   <f:entry title="API Server URL" field="apiServerUrl">
