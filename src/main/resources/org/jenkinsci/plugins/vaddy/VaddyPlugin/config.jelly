@@ -22,7 +22,7 @@
     <f:textbox />
   </f:entry>
 
-  <f:entry title="Crawl ID(Optional)" field="crawlId">
+  <f:entry title="Crawl ID or Label (Optional)" field="crawlId">
     <f:textbox />
   </f:entry>
 

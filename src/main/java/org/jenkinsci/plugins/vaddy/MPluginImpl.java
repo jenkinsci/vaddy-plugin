@@ -15,13 +15,14 @@ import net.jumperz.security.MSecurityUtil;
 import net.jumperz.util.MStreamUtil;
 import net.jumperz.util.MSystemUtil;
 import net.sf.json.JSONObject;
+import net.sf.json.JSONArray;
 
 public class MPluginImpl
 {
 private final String host;
 private final String userId;
 private final String authKey;
-private final String crawlId;
+private String crawlId;
 private final String apiServerUrl;
 private final String proxyHost;
 private final String proxyPort;
@@ -99,6 +100,67 @@ if( response.getStatusCode() != 200 )
 final Map apiResult = JSONObject.fromObject( response.getBodyAsString() );
 scanId = apiResult.get( "scan_id" ) + ""; // convert int to string
 return scanId;
+}
+//--------------------------------------------------------------------------------
+//CrawlIDがラベル文字だった場合は検索してcrawl idをセットする
+//ヒットしなかった場合は、crawlIdプロパティをnullにする
+public void getCrawlIdIfLabelSearch( final MRequestUri uri)
+throws Exception
+{
+	if(crawlId == null || crawlId == "" || crawlId.matches( "^[1-9][0-9]{1,6}$" ))
+	{
+		log("No need to do getCrawlIdIfLabelSearch.");
+		return;
+	}
+
+	final Map parameterMap = new HashMap();
+	parameterMap.put( "user", userId );
+	parameterMap.put( "fqdn", host );
+	parameterMap.put( "auth_key", authKey );
+	parameterMap.put( "search_label", crawlId);
+	
+	final MHttpRequest apiRequest = MVaddyUtil.getAPIRequest( "/v1/crawl", MConstants.HTTP_METHOD_GET, parameterMap );
+	apiRequest.setHeaderValue( "Host", uri.getHost() );
+	apiRequest.removeHeaderValue( "X-Auth-Token" );
+	
+	MHttpResponse response = null;
+	
+	Socket socket = getSocket( uri );
+	try
+		{
+		socket.getOutputStream().write( apiRequest.toByteArray() );
+		response = new MHttpResponse( new BufferedInputStream( socket.getInputStream() ) );
+		}
+	finally
+		{
+		MSystemUtil.closeSocket( socket );
+		}
+	
+	log( response );
+	
+	if( response.getStatusCode() != 200 )
+		{
+		//エラー
+		errorMessage = response.toString();
+		log( "Invalid Status Code:" + response.getStatusCode() );
+		crawlId = "";
+		return;
+		}
+	
+	final JSONObject apiResult = JSONObject.fromObject( response.getBodyAsString() );
+	//p( apiResult );
+
+	if((Integer)apiResult.get( "total" ) == 0) {
+		log( "No hit by the crawl label search." );
+		crawlId = "";
+		return;
+	}
+
+	JSONArray items = JSONArray.fromObject( apiResult.get( "items" ) );
+	JSONObject item = items.getJSONObject(0);
+	String id = (String)item.get("id");
+	log( "get crawl id by search. CrawlID: " + id );
+	crawlId = id;
 }
 //--------------------------------------------------------------------------------
 public boolean getResult( final MRequestUri uri, final String scanId )
@@ -188,6 +250,7 @@ Socket socket = null;
 try
 	{
 	socket = getSocket( uri );
+	getCrawlIdIfLabelSearch( uri );
 	scanId = startScan( uri.getHost(), socket );
 	}
 finally
