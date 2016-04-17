@@ -2,4 +2,5 @@ work/
 target/
 bin/
 release.properties
-
+.classpath
+.project
