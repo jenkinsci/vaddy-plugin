@@ -5,7 +5,7 @@
     <artifactId>plugin</artifactId>
     <version>1.532.3</version><!-- which version of Jenkins is this plugin built against? Users must have at least this Jenkins version to use this plugin. -->
   </parent>
-  <version>1.2.8-SNAPSHOT</version>
+  <version>1.2.8</version>
   <packaging>hpi</packaging>
 
   <licenses>
@@ -47,7 +47,7 @@
     <connection>scm:git:ssh://github.com/jenkinsci/vaddy-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/jenkinsci/vaddy-plugin.git</developerConnection>
     <url>https://github.com/jenkinsci/vaddy-plugin</url>
-    <tag>HEAD</tag>
+    <tag>vaddy-plugin-1.2.8</tag>
   </scm>
   
 </project>
