@@ -158,7 +158,7 @@ throws Exception
 
 	JSONArray items = JSONArray.fromObject( apiResult.get( "items" ) );
 	JSONObject item = items.getJSONObject(0);
-	String id = (String)item.get("id");
+	String id = item.getString("id");
 	log( "get crawl id by search. CrawlID: " + id );
 	crawlId = id;
 }
